@@ -1,5 +1,5 @@
 #include <cmath>
-#include "sort_proc.h"
+#include "sort_func.h"
 #include "gtest/gtest.h"
 using namespace std;
 
@@ -65,9 +65,9 @@ TEST(Sort,Arrangements) {
   ASSERT_EQ(s3_80,arrangement(s3,4,80));
 }
 
-// test procedural style; all arrangments of samples, len < 4
-TEST(Sort, Proc) {
-  std::vector < std::string > items = {};
+// test functional style; all arrangments of samples, len < 4
+TEST(Sort, Func) {
+  std::vector < std::string> duplicate = {};
   std::vector < std::string > expect = {};
   std::vector < std::string> result;
 
@@ -75,26 +75,16 @@ TEST(Sort, Proc) {
     int n = arrangements(samples,len);
     for (int i = 0; i < n; ++i) {
       auto items = arrangement(samples,len,i);
+      auto dup = items;
 
       std::vector < std::string > expect(items);
       std::sort(expect.begin(),expect.end()); // STD sort will sort a vector of strings alphabeticaclly 
 
-      std::vector < std::string > result(items); // What does this line do? Is the vector of strings? "x" "y" "z"
-
-      sort_proc(result); // FUNCTION CALL TO SORT_PROC()
-      std::cout << "THE EXPECT VECTOR: ";
-      std::cout << expect;
-
-      std::cout << "THE RESULT VECTOR: ";
-      std::cout << result;
+      std::vector < std::string > result = sort_func(items); 
+      ASSERT_EQ(dup, items) << " for items = " << items;
+     
 
       ASSERT_EQ(expect,result) << " for items = " << items;
     }
   }
 }
-
-// TO DO:
-// Figure out header file error -> just in my code? his code? what if I pull again and check... GET IT TO COMPILE PLEASE!
-// Ask about the syntax of the vector && how sorting even works on that type of situation (what is being passed and how is it being used in the other file)
-// Is there a particular sorting algorithm that is more procedural in nature or can any searching algorithm be made procedural? What exactly does this look like? 
-  // Lots of loops, specific instructions, step by step, *no recurssion?*
