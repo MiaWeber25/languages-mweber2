@@ -51,9 +51,9 @@ include Makefile.googletest
 # find options are different on darwin
 #
 ifeq "$(UNAME_S)" "Darwin"
-  FIND_SRC ?= find -E src
+	FIND_SRC ?= find -E src
 else
-  FIND_SRC ?= find src -regextype posix-extended
+	FIND_SRC ?= find src -regextype posix-extended
 endif
 
 # all not-main and not-test source files in the src folder
@@ -133,10 +133,10 @@ $(TMP)/%.c.d: src/%.c
 
 # use (and maybe update) dependency rules unless I am cleaning or making googletests
 ifneq (clean,$(MAKECMDGOALS))
-ifneq (googletest,$(MAKECMDGOALS))
--include $(patsubst src/%.cpp,$(TMP)/%.cpp.d,$(CPP_PARTS) $(CPP_MAINS) $(CPP_TESTS))
--include $(patsubst src/%.c,$(TMP)/%.c.d,$(C_PARTS) $(C_MAINS) $(C_TESTS))
-endif
+	ifneq (googletest,$(MAKECMDGOALS))
+		-include $(patsubst src/%.cpp,$(TMP)/%.cpp.d,$(CPP_PARTS) $(CPP_MAINS) $(CPP_TESTS))
+		-include $(patsubst src/%.c,$(TMP)/%.c.d,$(C_PARTS) $(C_MAINS) $(C_TESTS))
+	endif
 endif
 
 # generic compile a c++ test file rule
