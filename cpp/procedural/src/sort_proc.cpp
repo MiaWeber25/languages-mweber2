@@ -15,6 +15,7 @@ int partition(std::vector<std::string> &items, int start, int end) { // function
       count++;
     }
   }
+  
     int pIndex = start + count; // pIndex is the index of p's correct location
     swap(items[pIndex], items[start]); // place p (the pivot) into its correct location
 

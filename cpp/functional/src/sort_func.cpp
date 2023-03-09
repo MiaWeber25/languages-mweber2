@@ -1,60 +1,44 @@
+#include <iostream>
 #include "sort_func.h"
-// MERGE SORT!!
-// staple sort -> doesn't modify the position of elements if they are equal (not out of order, don't change anything)
+#include "utility.h"
+#include "merger.h"
 
-std::vector<std::string> merge(const std::vector<std::string> &first, const std::vector<std::string> &second, std::vector<std::string>) {
-  auto i = first.begin();
-  auto j = second.begin(); 
-
-  if (j == second.end()) {
-    return first;
-  }
-  if (i == first.end()) {
-    return second;
-  }
-  
-
-  std::vector<std::string> ans;
-
-  if ()
-
-  // This loop is still very procedural
-  while (i != first.end() && j!= second.end()) { // While theres something in both lists
-    if (*j < *i) { // Want to move something from j
-      ans.push_back(*j);
-      ++j;
-    } else {
-      ans.push_back(*i);
-      ++i;
-    }
+#if 0
+template <typename T, typename Ordered = std::less < T > >
+std::vector<T>  sort_func(typename std::vector<T>::const_iterator begin, 
+                          typename std::vector<T>::const_iterator end) {
+  typename std::vector<T>::difference_type size =  end - begin;
+  if (size <= 1) {
+    return std::vector<T>(begin,end);
   }
 
- return ans;
+  auto a0 = begin;
+  auto a1 = a0 + size/2;
+  auto b0 = a1;
+  auto b1 = end;
+
+  auto a = sort_func<T,Ordered>(a0,a1);
+  auto b = sort_func<T,Ordered>(b0,b1);
+
+  merger<typename std::vector<T>::const_iterator,typename std::vector<T>::const_iterator,Ordered> m(a.begin(),a.end(),b.begin(),b.end());
+  return std::vector < T > (m.begin(),m.end());
+}
+#endif
+
+std::vector<std::string> merge(const std::vector<std::string> &a, const std::vector<std::string> &b) {
+  if (a.size() == 0) return b;
+  if (b.size() == 0) return a;
+
+  if (b[0] < a[0]) {
+    return vec(b[0],merge(a,slice(b,1,b.size())));
+  } else {
+    return vec(a[0],merge(slice(a,1,a.size()),b));
+  }
 }
 
-// sort first half, sort second half, merge two sorted lists together and return
-std::vector<std::string> sort_func(std::vector<std::string>::const_iterator begin, std::vector<std::string>::const_iterator end) {
-  size_t size = end - begin; // Get the distance between the two iterators = size of the vector
-  if (size <=1) {
-      return std::vector<std::string> (begin, end); // Can't return items, create a new vector to return
-    }
-
-  // sort(a,b) = [a,b)
-  auto firstBegin = begin; // Beginning of the list
-  auto firstEnd = firstBegin + size/2; // Halfway through the list
-  auto secondBegin = firstEnd; 
-  auto secondEnd = end; // End of the list
-
-  auto firstSorted = sort_func(firstBegin, firstEnd);
-  auto secondSorted = sort_func(secondBegin, secondEnd);
-
-  return merge(firstSorted, secondSorted);
-}
-
-
-// const & so that you can't modify the original data and can't be void because it needs to hand back a new list of things
-std::vector <std::string> sort_func(const std::vector<std::string> &items) {
-  // TODO sort the items using a functional programming style.
-  return sort_func(items.begin(), items.end());
-
+std::vector<std::string>  sort_func(const std::vector<std::string> &items) {
+  if (items.size() <= 1) { return items; }
+  auto a = sort_func(slice(items,0,items.size()/2));
+  auto b = sort_func(slice(items,items.size()/2,items.size()));
+  return merge(a,b);
 }
