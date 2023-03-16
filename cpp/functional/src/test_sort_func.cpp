@@ -32,4 +32,12 @@ TEST(Sort, Func) {
       ASSERT_EQ(expect,result) << " for items = " << STRING(items);
     }
   }
+  // My test 
+  std::vector<std::string> myVector = {"hello", "mia", "was", "here"};
+
+  std::vector<std::string> expectedVector = {"hello", "here", "mia", "was"};
+
+  std::vector<std::string> theResult = sort_func(myVector);
+  ASSERT_EQ(expectedVector, theResult); // << " for items = " << STRING(items);
 }
+

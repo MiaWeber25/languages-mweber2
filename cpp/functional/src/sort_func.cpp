@@ -1,44 +1,56 @@
+// Functional Style Sort 
+// Mia Weber
+// 03/14/2023
+// CSCI330 Programming Languages
+
 #include <iostream>
 #include "sort_func.h"
 #include "utility.h"
 #include "merger.h"
 
-#if 0
-template <typename T, typename Ordered = std::less < T > >
-std::vector<T>  sort_func(typename std::vector<T>::const_iterator begin, 
-                          typename std::vector<T>::const_iterator end) {
-  typename std::vector<T>::difference_type size =  end - begin;
-  if (size <= 1) {
-    return std::vector<T>(begin,end);
-  }
+bool greaterThan(std::vector<std::string> &vec, size_t comp1, size_t comp2) {
+    int min = minIndex(vec,comp1,comp2+1);
 
-  auto a0 = begin;
-  auto a1 = a0 + size/2;
-  auto b0 = a1;
-  auto b1 = end;
+    if (min == comp2) { 
+        return true; // yes! first value is greater than second value!
+    }
 
-  auto a = sort_func<T,Ordered>(a0,a1);
-  auto b = sort_func<T,Ordered>(b0,b1);
-
-  merger<typename std::vector<T>::const_iterator,typename std::vector<T>::const_iterator,Ordered> m(a.begin(),a.end(),b.begin(),b.end());
-  return std::vector < T > (m.begin(),m.end());
-}
-#endif
-
-std::vector<std::string> merge(const std::vector<std::string> &a, const std::vector<std::string> &b) {
-  if (a.size() == 0) return b;
-  if (b.size() == 0) return a;
-
-  if (b[0] < a[0]) {
-    return vec(b[0],merge(a,slice(b,1,b.size())));
-  } else {
-    return vec(a[0],merge(slice(a,1,a.size()),b));
-  }
+    return false; // no! first value is NOT greater than second value!
 }
 
-std::vector<std::string>  sort_func(const std::vector<std::string> &items) {
-  if (items.size() <= 1) { return items; }
-  auto a = sort_func(slice(items,0,items.size()/2));
-  auto b = sort_func(slice(items,items.size()/2,items.size()));
-  return merge(a,b);
+std::vector<std::string> doSwap(const std::vector<std::string> &sorted, size_t j) {
+    std::vector<std::string> result = vec(sorted);
+   
+    result = swap(result, j, j+1); // swap the smaller element with the element to it's right
+
+    if (j+1 < result.size()-1) { // if there is an element to the right of j
+        if (greaterThan(result, j+1, j+2)) { 
+            result = doSwap(result, j+1);
+        }
+    }
+    return result;
+}
+
+std::vector<std::string> insertion(std::vector<std::string> &progress, size_t n) {
+    std::vector<std::string> sorted = vec(progress); // make a copy of the input vector progress
+    size_t m = sorted.size(); 
+
+    if (sorted.size() <= 1 || n < 1) { // base case: if the vector is 0 or 1 or you have been through it all then you're done
+        return sorted;
+    }
+
+    if (greaterThan(sorted, n-1, n)) { 
+        sorted = doSwap(sorted, n-1); 
+    }
+
+    return insertion(sorted, n-1);
+}
+
+std::vector<std::string> sort_func(const std::vector<std::string> &items) {
+    if (items.size() <= 1) { return items; }
+
+    std::vector<std::string> progress = vec(items);
+    size_t n = progress.size();
+
+    return (insertion(progress,n-1));
 }
