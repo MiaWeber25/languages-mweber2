@@ -12,7 +12,7 @@ TEST(RegEx,JsonStrings) {
   //
   //std::basic_regex re(R"=(your-ad-here)=",std::regex::extended);  
 
-  // below is the simple regex that passes here: https://regexr.com/7c51a   
+  // below is the simple regex that passes here: https://regexr.com/7ca8u   
   //std::basic_regex re(R"=(^"\(\(?=\)\("|/|\\|b|"|f|n|r|t|u[0-9a-f]{4}\)|[^\\"]*\)*"$)=",std::regex::extended); 
   // once you combine or statements and correct the escaping issues for c++ you get the following:
 
