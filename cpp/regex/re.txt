@@ -1,0 +1,45 @@
+#  simplest regular expressions
+
+  (nothing) as a regular expression stands for the set strings {""}
+a (any simple letter) as a regular expression stands for the set strings {"a"}
+
+# concatenation
+
+XY = {s where s can be split into two parts x and y (maybe one are both are empty) and x is in X and y in Y }
+
+ab = {s where s can be split into two parts x and y (maybe one are both are empty) and x is in {"a"} and y in {"b"} }
+   = {s where s can be split into two parts x="a" and y="b" }
+   = {"ab"}
+
+#
+
+X|Y = {s where s is in X or s is in Y}  (set union)
+
+
+(cat|dog)(s|)
+
+({"cat"}|{"dog})({"s"}|{""})
+({"cat","dog"})({"s",""})
+{"cat","cats","dog","dogs"}
+
+
+X{n,m}=XXXXX(n times)|XXXXXXX(n + 1 times)|XXXXXXXXX(n+2 times|....|XXXXXXXX (m times)
+
+a{1,3} a|aa|aaa
+
+a{,3} (|a|aa|aaa)
+
+a{2,} (aa|aaa|aaaa|....)
+
+a? = a{0,1}
+a* = a{0,}
+a+ = a{1,}
+
+bob@bobs.com
+(a|b|c|...|z)+@(a|b|c|...|z)+.(com|edu)+
+
+[a-zA-Z0-9]=(a|b|..|z|A|B|..|Z|0|1|..|9)
+
+
+[a-zA-Z0-9]+@[a-zA-Z0-9]\.(com|edu)
+
