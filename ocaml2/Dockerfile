@@ -15,5 +15,4 @@ RUN echo  export PATH='"'/app/_build/default:/app/bin:/app/bin/$(uname -s)-$(una
 RUN echo  'opam switch 4.10 > /dev/null' >> $HOME/.bashrc
 RUN echo  'eval $(opam env)' >> $HOME/.bashrc
 RUN opam install dune
-# CMD ["ocaml","app.ml"]
 ENTRYPOINT ["/bin/bash","-i","-c","\"$@\"","--"]

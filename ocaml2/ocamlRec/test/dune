@@ -1,3 +1,5 @@
-(test
- (name ocamlRec)
- (libraries base stdio))
+(executable
+ (name test)
+ (libraries ounit2))
+
+
